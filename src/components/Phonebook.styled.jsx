@@ -1,4 +1,3 @@
-import { Field } from 'formik';
 import styled from 'styled-components';
 
 export const PhonebookBox = styled.div`
@@ -21,14 +20,14 @@ export const InputWrapper = styled.div`
     flex-direction: column;
     margin-bottom: 20px;
 `;
-export const Input = styled(Field)`
+export const Input = styled.input`
     text-indent: 10px;
     font-size: 24px;
     border: 1px solid;
     border-radius: 10px;
     background-color: #f7f9ff;
 `;
-export const LabelTitle = styled.label`
+export const Label = styled.label`
     font-size: 20px;
     margin-bottom: 10px;
 `;

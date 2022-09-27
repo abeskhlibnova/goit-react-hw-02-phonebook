@@ -1,33 +1,12 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
-import { Formik, Form, ErrorMessage } from 'formik';
 import {
     InputWrapper,
     Input,
-    LabelTitle,
+    Label,
     AddContactButton,
 } from './Phonebook.styled';
-import styled from 'styled-components';
-// import * as Yup from 'yup';
-
-const ErrorText = styled.p`
-    font-size: 14px;
-    color: red;
-`;
-
-const FormError = ({ name }) => {
-    return (
-        <ErrorMessage
-            name={name}
-            render={message => <ErrorText>{message}</ErrorText>}
-        />
-    );
-};
-
-// const schema = Yup.object().shape({
-//     name: Yup.string().min(3, 'to shop').required(),
-//     number: Yup.number().min(7, 'to short').required(),
-// });
 
 export default class ContactForm extends Component {
     state = {
@@ -43,60 +22,56 @@ export default class ContactForm extends Component {
         this.setState({
             [name]: value,
         });
+        console.log('change');
     };
 
-    handleSubmit = () => {
+    handleSubmit = e => {
+        e.preventDefault();
         const { name, number } = this.state;
         this.props.onSubmit({ name, number });
         this.setState({
             name: '',
             number: '',
         });
+        console.log('submit');
     };
 
     render() {
         const { nameId, numberId, handleSubmit, handleChange } = this;
 
         return (
-            <Formik
-                initialValues={this.state}
-                // validationSchema={schema}
-                onSubmit={handleSubmit}
-            >
-                <Form>
-                    <InputWrapper>
-                        <LabelTitle htmlFor={nameId}>Name</LabelTitle>
-                        <Input
-                            id={nameId}
-                            type="text"
-                            name="name"
-                            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-                            required
-                            value={this.state.name}
-                            onChange={handleChange}
-                        />
-                        <FormError name="name" />
-                    </InputWrapper>
-                    <InputWrapper>
-                        <LabelTitle htmlFor={numberId}>Number</LabelTitle>
-                        <Input
-                            id={numberId}
-                            type="tel"
-                            name="number"
-                            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-                            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-                            required
-                            value={this.state.number}
-                            onChange={handleChange}
-                        />
-                        <FormError name="number" />
-                    </InputWrapper>
-                    <AddContactButton type="submit">
-                        Add contact
-                    </AddContactButton>
-                </Form>
-            </Formik>
+            <form onSubmit={handleSubmit}>
+                <InputWrapper>
+                    <Label htmlFor={nameId}>Name</Label>
+                    <Input
+                        id={nameId}
+                        type="text"
+                        name="name"
+                        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+                        required
+                        value={this.state.name}
+                        onChange={handleChange}
+                    />
+                </InputWrapper>
+                <InputWrapper>
+                    <Label htmlFor={numberId}>Number</Label>
+                    <Input
+                        id={numberId}
+                        type="tel"
+                        name="number"
+                        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+                        required
+                        value={this.state.number}
+                        onChange={handleChange}
+                    />
+                </InputWrapper>
+                <AddContactButton type="submit">Add contact</AddContactButton>
+            </form>
         );
     }
 }
+ContactForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+};

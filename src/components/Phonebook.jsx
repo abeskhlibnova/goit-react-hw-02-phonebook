@@ -46,7 +46,10 @@ export default class Phonebook extends Component {
 
     isDuplicate({ name }) {
         const { contacts } = this.state;
-        const result = contacts.find(contact => contact.name === name);
+        const result = contacts.find(
+            contact =>
+                contact.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+        );
         return result;
     }
 
